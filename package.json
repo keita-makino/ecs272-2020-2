@@ -5,9 +5,9 @@
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
-    "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^24.0.25",
-    "@types/node": "^12.12.24",
+    "@testing-library/user-event": "^8.0.3",
+    "@types/jest": "^24.9.0",
+    "@types/node": "^13.1.7",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
     "react": "^16.12.0",
@@ -16,8 +16,8 @@
     "typescript": "^3.7.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -34,6 +34,44 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@apollo/react-hooks": "^3.1.3",
+    "@hot-loader/react-dom": "^16.11.0",
+    "@material-ui/core": "^4.8.3",
+    "@typescript-eslint/eslint-plugin": "^2.16.0",
+    "@typescript-eslint/parser": "^2.16.0",
+    "apollo-boost": "^0.4.7",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "graphql": "^14.5.8",
+    "husky": "^4.0.10",
+    "license-checker": "^25.0.1",
+    "lint-staged": "^9.5.0",
+    "react-app-rewire-hot-loader": "^2.0.1",
+    "react-app-rewired": "^2.1.5",
+    "react-hot-loader": "^4.12.18",
+    "react-live": "^2.2.2",
+    "react-use": "^13.17.0",
+    "react-vis": "^1.11.7",
+    "react-vis-types": "0.0.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": [
+        "lint-staged && node license/exportStatements && git add license/."
+      ]
+    }
+  },
+  "lint-staged": {
+    "./**/*.{js,ts,jsx,tsx}": [
+      "eslint"
+    ],
+    "./**/*.{js,ts,jsx,tsx,json,md}": [
+      "prettier --write",
+      "git add"
     ]
   }
 }
