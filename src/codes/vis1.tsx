@@ -1,24 +1,70 @@
 const code = `
   () => {
-    return(
-    <RV.XYPlot width={300} height={300}>
-      <RV.VerticalGridLines />
-      <RV.HorizontalGridLines />
-      <RV.XAxis />
-      <RV.YAxis />
-      <RV.MarkSeries
-        strokeWidth={2}
-        opacity={0.8}
-        sizeRange={[5, 15]}
-        data={[
-          { x: 1, y: 10, size: 30 },
-          { x: 1.7, y: 12, size: 10 },
-          { x: 2, y: 5, size: 1 },
-          { x: 3, y: 15, size: 12 },
-          { x: 2.5, y: 7, size: 4 }
-        ]}
-      />
-    </RV.XYPlot>)
+    const classes = useStyles();
+
+    const [tooltip, setTooltip] = React.useState([]);
+  
+    const query = gql\`
+      {
+        laxRecords @client {
+          ReportPeriod
+          Domestic_International
+          Passenger_Count
+          __typedata
+        }
+      }
+    \`;
+    const client = useApolloClient();
+    const { data } = useQuery(query, { client: client });
+  
+    const plotData = Object.values(
+      data.laxRecords
+        .map((item) => ({
+          x: new Date(item.ReportPeriod.split(' ')[0]),
+          i: item.Domestic_International,
+          z: item.Passenger_Count
+        }))
+        .reduce((summary, current, index) => {
+          const str = JSON.stringify([current.x, current.i]);
+          summary[str] = Object.assign({}, current, {
+            y: summary[str] ? summary[str].y + current.z : current.z
+          });
+          return summary;
+        }, {})
+    ).sort((a, b) => (a.x < b.x ? -1 : 1));
+  
+    const onNearestXY = (value) => {
+      setTooltip(plotData.filter(item => item.x.getTime() === value.x.getTime()));
+    };
+  
+    return (
+      <RV.XYPlot
+        xType="time"
+        width={960}
+        height={600}
+        margin={{ left: 75, bottom: 55 }}
+        yDomain={[0, Math.max(...plotData.map(item => item.y)) * 1.1]}
+      >
+        <RV.VerticalGridLines style={{ stroke: '#B7E9ED' }} />
+        <RV.HorizontalGridLines style={{ stroke: '#B7E9ED' }} />
+        <RV.XAxis />
+        <RV.YAxis />
+        <RV.LineSeries
+          data={plotData.filter(item => item.i === 'Domestic')}
+          onNearestXY={onNearestXY}
+        />
+        <RV.LineSeries
+          data={plotData.filter(item => item.i === 'International')}
+          onNearestXY={onNearestXY}
+        />
+        <RV.Crosshair values={tooltip} />
+        <RV.DiscreteColorLegend
+          className={classes.legend}
+          orientation="horizontal"
+          items={[{ title: 'Domestic' }, { title: 'International' }]}
+        />
+      </RV.XYPlot>
+    );
   };
 `;
 
