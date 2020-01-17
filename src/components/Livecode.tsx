@@ -16,16 +16,19 @@ type Props = {
 
 const useStyles = makeStyles({
   chart: {
-    marginLeft: '120px',
     '& .rv-xy-plot__series--label-text': {
-      textAnchor: 'middle'
+      textAnchor: 'middle',
+      alignmentBaseline: 'middle'
+    },
+    '& .rv-xy-plot__series': {
+      paddingTop: '48px'
     }
   },
   legend: {
     position: 'absolute',
-    left: '80px',
-    top: '10px',
-    backgroundColor: 'white'
+    left: '110px',
+    top: '48px',
+    backgroundColor: 'rgba(255,255,255,0.6)'
   }
 });
 

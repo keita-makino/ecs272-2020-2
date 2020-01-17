@@ -4,7 +4,7 @@ import ApolloClient, { gql } from 'apollo-boost';
 import { ApolloProvider, useQuery } from '@apollo/react-hooks';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { resolvers, typeDefs } from './resolvers';
-import { Grid } from '@material-ui/core';
+import { Grid, makeStyles, AppBar, Typography } from '@material-ui/core';
 import dataLax from './data/LAX_Terminal_Passengers.json';
 import dataIns from './data/Restaurant_Inspection.json';
 
@@ -31,47 +31,76 @@ cache.writeData({
 
 console.log(cache);
 
+const useStyles = makeStyles({
+  appBar: {
+    backgroundColor: '#002855'
+  },
+  container: {
+    fontFamily: 'roboto, Arial, Helvetica, sans-serif !important',
+    color: '#222',
+    backgroundColor: '#FBF6E5',
+    textAlign: 'justify'
+  },
+  header: {
+    margin: '5rem 0 1rem 0',
+    padding: '0 3rem',
+    borderBottom: '6px double #002855'
+  },
+  vis: {
+    backgroundColor: '#F4E5B2',
+    borderTop: '1px solid #DAAA00',
+    borderBottom: '1px solid #DAAA00',
+    margin: '1rem 0',
+    padding: '1rem 3rem',
+    '& > div:first-child': {
+      width: '720px',
+      maxHeight: '800px',
+      backgroundColor: '#FFFFFF',
+      overflow: 'auto !important',
+      '& > textarea': {
+        width: 'unset !important',
+        height: 'unset !important'
+      }
+    },
+    '& .rv-xy-plot': {
+      backgroundColor: '#FFFFFF'
+    }
+  }
+});
+
 const App: React.FC = () => {
+  const classes = useStyles();
+
   return (
     <ApolloProvider client={client}>
-      <Grid container style={{ margin: '0 3rem' }}>
-        <Grid container item>
+      <AppBar position="sticky" className={classes.appBar}>
+        <Grid container justify={'space-between'} alignItems={'center'}>
+          <Typography variant="h5" style={{ margin: '1rem 3rem' }}>
+            ECS272-2020 Assignment 2
+          </Typography>
+          <Typography variant="body1" style={{ margin: '1rem 3rem' }}>
+            Keita Makino
+          </Typography>
+        </Grid>
+      </AppBar>
+      <Grid container className={classes.container} justify={'center'}>
+        <Typography variant="h4" className={classes.header}>
+          1: LAX Arrivals / Departures by Flight Type
+        </Typography>
+        <Grid container item justify={'space-between'} className={classes.vis}>
           <Livecode code={vis1} />
-          <p>
-            The visualizaiton above displays the monthly number of
-            international/domestic passengers from/to Los Angeles International
-            Airport (LAX). It tells us that both among domestic and
-            intetnational flights, there is a seasonal tendency of the passenger
-            count. In detail, the flights from/to this airport seems more
-            popular in summer holidays. Also, one can assess that the recession
-            in 2008 has lead to a temporal depression in the number of
-            passengers at this airport. The number has been though increasing
-            after the economy has boom again.
-          </p>
         </Grid>
-        <Grid container item>
+        <Typography variant="h4" className={classes.header}>
+          2: LAX Arrival + Departure Share by Terminals
+        </Typography>
+        <Grid container item justify={'space-between'} className={classes.vis}>
           <Livecode code={vis2} />
-          <p>
-            This interactive pir chart illustrates the share of the passengers
-            (departure/arrival) from each terminals at LAX. Note that a pie with
-            less than 10,000 passengers per month is not shown. Using the
-            slider, one can find that the share of international flights (at Tom
-            Bradley International Terminal) has been slightly but continuously
-            increasing over the time, and the share of other terminals has been
-            getting more and more equivalent during the period. This implies
-            that the management system of allocating the aviation companies and
-            controlling the passenger flow has advanced so that there are less
-            and less congested terminals in the airport overall.
-          </p>
         </Grid>
-        <Grid container item>
+        <Typography variant="h4" className={classes.header}>
+          3: Restaurant Inspections in Louisville
+        </Typography>
+        <Grid container item justify={'space-between'} className={classes.vis}>
           <Livecode code={vis3} />
-          <p>
-            This scatterplot over the map shows the result of health-inspection
-            at restaurants in Louisville, Kentucky. A cyan dot and orange dot
-            respectively indicates that the restaurant has obtained a good
-            (100/100) or bad (0/100) result from the inspection.
-          </p>
         </Grid>
       </Grid>
     </ApolloProvider>
