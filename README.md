@@ -4,4 +4,5 @@ As a homework of [ECS272 2020 Winter: Immersive Visualization](https://github.co
 
 # Webpage
 
-You can try the demo [here](https://keita-makino.github.io/ecs272-2020-2).
+You can try the demo [here](https://keita-makino.github.io/ecs272-2020-2).  
+Note: The web app sis optimized for 1920x1080 resolution on PCs. May not work with other than Chromium browsers. 
