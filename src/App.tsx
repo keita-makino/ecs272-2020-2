@@ -58,8 +58,8 @@ const useStyles = makeStyles({
       backgroundColor: '#FFFFFF',
       overflow: 'auto !important',
       '& > textarea': {
-        width: 'unset !important',
-        height: 'unset !important'
+        width: '720px !important',
+        height: '200vh !important'
       }
     },
     '& .rv-xy-plot': {
