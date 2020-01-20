@@ -92,7 +92,7 @@ const code = `
         </RV.RadialChart>
         <MUI.Slider
           onChange={handleChange}
-          max={dates.length}
+          max={dates.length - 1}
           style={{color: "#002855", width: '960px'}}
         />
         <p style={{ width: '960px' }}>
